@@ -4,16 +4,14 @@ FROM eclipse-temurin:21-jdk
 # Set working directory
 WORKDIR /app
 
-# Copy the wrapper and set execute permission
-COPY .mvn/ .mvn
-COPY mvnw .
-RUN chmod +x mvnw
-
-# Copy the rest of the project
+# Copy all project files
 COPY . .
 
-# Build the project
+# Give execution permission to mvnw
+RUN chmod +x mvnw
+
+# Build the project (skip tests)
 RUN ./mvnw clean package -DskipTests
 
 # Run the jar
-CMD ["java", "-jar", "target/militaryAsset-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "target/militaryAsset-0.0.1-SNAPSHOT.jar"]
