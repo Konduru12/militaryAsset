@@ -1,11 +1,14 @@
 # Use official JDK image
 FROM eclipse-temurin:21-jdk
 
-# Set the JAR file path
-ARG JAR_FILE=target/militaryAsset-0.0.1-SNAPSHOT.jar
+# Set working directory inside container
+WORKDIR /app
 
-# Copy the JAR to the container
-COPY ${JAR_FILE} app.jar
+# Copy everything from your project into the container
+COPY . .
 
-# Run the JAR
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+# Build the JAR using Maven Wrapper
+RUN ./mvnw clean package -DskipTests
+
+# Run the built JAR file
+ENTRYPOINT ["java", "-jar", "target/militaryAsset-0.0.1-SNAPSHOT.jar"]
